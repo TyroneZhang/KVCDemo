@@ -18,9 +18,9 @@ NSLog(@"name = %@", [idcard valueForKey:@"name"]); // thie will print tyrone
 ## KVC赋值取值过程分析
 
 ### 赋值过程
-1. [obj valueForKey:]会按照set<Key>、_set<Key> 、setIs<Key>三个方法顺序进行查找赋值；
+1. [obj valueForKey:]会按照setKey、_setKey 、setIsKey三个方法顺序进行查找赋值；
 2.  如果1.中的三个方法都未实现，从`+ (BOOL)accessInstanceVariablesDirectly // 默认返回的是YES`方法中获取bool值，, 如果返回的是NO,会执行valueForUndefinedKey:方法，抛出异常，然后crash；
-3. 如果返回的是YES， 根据顺序_<key>、_is<Key>、<key>、is<Key>寻找相关变量；
+3. 如果返回的是YES， 根据顺序_key、_isKey、key、isKey寻找相关变量；
 4. 若方法或成员变量都不存在，执行valueForUndefinedKey:方法，抛出异常，然后crash；
 
 测试代码如下：
@@ -75,7 +75,7 @@ NSLog(@"name = %@", idcard->isName); // 虽然key是‘name’,但这里仍然�
 1. 按顺序寻找找相关方法 get<Key>、<key>;
 2. 若没有相关方法, `+ (BOOL)accessInstanceVariablesDirectly` 判断是否可以直接访问c成员变量；
 3. 如果是NO，执行valueForUndefinedKey:方法，抛出异常，然后crash；
-4. 如果是YES，按照顺序_<key>、_is<Key>、<key>、is<Key>寻找相关变量;
+4. 如果是YES，按照顺序_key、_isKey、key、isKey寻找相关变量;
 5. 方法以及成员变量都未找到，执行valueForUndefinedKey:方法，抛出异常，然后crash。
 
 ## 自定义KVC
@@ -176,7 +176,7 @@ NSLog(@"avgHeight = %f, maxHeight = %f", avgHeight, maxHeight);
 }
 ```
 #### 数组操作符（@distinctUnionOfObjects， @unionOfObjects）
-#### /// 嵌套操作符(@distinctUnionOfArrays @unionOfArrays @distinctUnionOfSets)
+#### 嵌套操作符(@distinctUnionOfArrays @unionOfArrays @distinctUnionOfSets)
 数组嵌套数组也能进行kvc的操作
 
 ### KVC集合代理对象
